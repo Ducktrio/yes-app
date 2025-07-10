@@ -42,7 +42,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("Auth", policy => policy.RequireAuthenticatedUser())
     .AddPolicy("Manager", policy => policy.RequireClaim(ClaimTypes.Role, "R_001"))
     .AddPolicy("Receptionist", policy => policy.RequireClaim(ClaimTypes.Role, "R_002"))
     .AddPolicy("Staff", policy => policy.RequireClaim(ClaimTypes.Role, "R_003"));
@@ -62,6 +61,7 @@ builder.Services.AddScoped<IValidator<UpdateRoleContract>, UpdateRoleValidator>(
 
 //Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 

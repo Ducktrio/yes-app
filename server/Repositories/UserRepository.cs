@@ -8,7 +8,7 @@ namespace Yes.Repositories;
 public interface IUserRepository
 {
     Task<bool> Exists(string id);
-    Task<List<User>> Get(string? id = null, string? role_id = null);
+    Task<List<User>> Get(string? id = null, string? role_id = null, string? username = null);
     Task<User?> Create(User entity);
     Task<User?> Update(User entity);
     Task<User?> Delete(string id);
@@ -23,11 +23,12 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         return await _context.Users.AnyAsync(u => u.Id == id);
     }
 
-    public async Task<List<User>> Get(string? id = null, string? role_id = null)
+    public async Task<List<User>> Get(string? id = null, string? role_id = null, string? username = null)
     {
         var query = _context.Users.Include(u => u.Role).AsQueryable();
         if (!string.IsNullOrEmpty(id)) query = query.Where(u => u.Id == id);
         if (!string.IsNullOrEmpty(role_id)) query = query.Where(u => u.Role_id == role_id);
+        if (!string.IsNullOrEmpty(username)) query = query.Where(u => u.Username.ToLower().Contains(username.ToLower()));
         return await query.ToListAsync();
     }
 
