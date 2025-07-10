@@ -17,6 +17,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(u => u.Role)
             .WithMany(r => r.Users)
             .HasForeignKey(u => u.Role_id);
+
+        // Seeder
+        modelBuilder.Entity<Role>().HasData(
+            new Role { Id = "R_001", Title = "Manager" },
+            new Role { Id = "R_002", Title = "Receptionist" },
+            new Role { Id = "R_003", Title = "Staff" }
+        );
+        modelBuilder.Entity<User>().HasData(
+            new User { Id = "U_001", Role_id = "R_001", Username = "Manager", Password = BCrypt.Net.BCrypt.HashPassword("manager123"), Description = "Hotel Manager" },
+            new User { Id = "U_002", Role_id = "R_002", Username = "Receptionist", Password = BCrypt.Net.BCrypt.HashPassword("receptionist123"), Description = "Front Desk Receptionist" },
+            new User { Id = "U_003", Role_id = "R_003", Username = "Staff", Password = BCrypt.Net.BCrypt.HashPassword("staff123"), Description = "Hotel Staff" }
+        );
     }
 
     public override int SaveChanges()
@@ -33,7 +45,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     private void AssignCustomIds()
     {
-        // Assign User IDs
+        // User
         var newUsers = ChangeTracker.Entries<User>()
             .Where(e => e.State == EntityState.Added && string.IsNullOrEmpty(e.Entity.Id))
             .Select(e => e.Entity);
@@ -54,7 +66,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             }
         }
 
-        // Assign Role IDs
+        // Role
         var newRoles = ChangeTracker.Entries<Role>()
             .Where(e => e.State == EntityState.Added && string.IsNullOrEmpty(e.Entity.Id))
             .Select(e => e.Entity);
