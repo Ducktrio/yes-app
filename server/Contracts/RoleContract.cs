@@ -9,15 +9,3 @@ public record class RoleContract
     [JsonPropertyName("title")]
     public string Title { get; init; } = null!;
 }
-
-public record class CreateRoleContract
-{
-    [JsonPropertyName("title")]
-    public string Title { get; init; } = null!;
-}
-
-public record class UpdateRoleContract
-{
-    [JsonPropertyName("title")]
-    public string? Title { get; init; } = null;
-}
