@@ -43,23 +43,22 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     {
         var user = await _context.Users.FindAsync(entity.Id);
         if (user == null) return null;
-        
+
         user.Username = entity.Username;
         user.Password = entity.Password;
         user.Description = entity.Description;
         user.Role_id = entity.Role_id;
         await _context.SaveChangesAsync();
-        return entity;
+        return user;
     }
 
     public async Task<User?> Delete(string id)
     {
         var user = await _context.Users.FindAsync(id);
-        if (user != null)
-        {
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-        }
+        if (user == null) return null;
+        
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
         return user;
     }
 }

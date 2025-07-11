@@ -44,7 +44,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Manager", policy => policy.RequireClaim(ClaimTypes.Role, "R_001"))
     .AddPolicy("Receptionist", policy => policy.RequireClaim(ClaimTypes.Role, "R_002"))
-    .AddPolicy("Staff", policy => policy.RequireClaim(ClaimTypes.Role, "R_003"));
+    .AddPolicy("Staff", policy => policy.RequireClaim(ClaimTypes.Role, "R_003"))
+    .AddPolicy("ManagerAndReceptionist", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => c.Type == ClaimTypes.Role && (c.Value == "R_001" || c.Value == "R_002"))));
 
 //Repositories
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -56,12 +59,11 @@ builder.Services.AddAutoMapper(typeof(RoleMapper), typeof(UserMapper));
 //Validators
 builder.Services.AddScoped<IValidator<CreateUserContract>, CreateUserValidator>();
 builder.Services.AddScoped<IValidator<UpdateUserContract>, UpdateUserValidator>();
-builder.Services.AddScoped<IValidator<CreateRoleContract>, CreateRoleValidator>();
-builder.Services.AddScoped<IValidator<UpdateRoleContract>, UpdateRoleValidator>();
 
 //Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 
 builder.Services.AddControllers();
 

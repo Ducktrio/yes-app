@@ -3,3 +3,9 @@
 /obj
 /appsettings.json
 /Data/*.sqlite
+/Data/*.sqlite-wal
+/Data/*.sqlite-shm
+/Data/*.db
+/Data/*.db-wal
+/Data/*.db-shm
+/Data/*.db-journal
