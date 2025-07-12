@@ -62,8 +62,8 @@ builder.Services.AddScoped<IValidator<UpdateUserContract>, UpdateUserValidator>(
 
 //Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 
