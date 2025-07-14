@@ -13,12 +13,8 @@ public class RoomTicketMapper : Profile
         CreateMap<RoomTicket, RoomTicketContract>()
             .ForMember(dest => dest.CheckInDate, opt => opt.MapFrom(src => src.CheckInDate.HasValue ? DatetimeUtility.ToUnixTimestampString(src.CheckInDate.Value) : null))
             .ForMember(dest => dest.CheckOutDate, opt => opt.MapFrom(src => src.CheckOutDate.HasValue ? DatetimeUtility.ToUnixTimestampString(src.CheckOutDate.Value) : null));
-        CreateMap<CreateRoomTicketContract, RoomTicket>()
-            .ForMember(dest => dest.CheckInDate, opt => opt.MapFrom(src => src.CheckInDate != null ? DatetimeUtility.FromUnixTimestampString(src.CheckInDate) : (DateTime?)null))
-            .ForMember(dest => dest.CheckOutDate, opt => opt.MapFrom(src => src.CheckOutDate != null ? DatetimeUtility.FromUnixTimestampString(src.CheckOutDate) : (DateTime?)null));
+        CreateMap<CreateRoomTicketContract, RoomTicket>();
         CreateMap<UpdateRoomTicketContract, RoomTicket>()
-            .ForMember(dest => dest.CheckInDate, opt => opt.MapFrom(src => src.CheckInDate != null ? DatetimeUtility.FromUnixTimestampString(src.CheckInDate) : (DateTime?)null))
-            .ForMember(dest => dest.CheckOutDate, opt => opt.MapFrom(src => src.CheckOutDate != null ? DatetimeUtility.FromUnixTimestampString(src.CheckOutDate) : (DateTime?)null))
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

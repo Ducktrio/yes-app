@@ -16,7 +16,7 @@ public record class ServiceTicketContract
     [JsonPropertyName("details")]
     public string Details { get; init; } = null!;
     [JsonPropertyName("status")]
-    public string Status { get; init; } = null!;
+    public int Status { get; init; } = 0;
 }
 
 public record class CreateServiceTicketContract
@@ -29,8 +29,6 @@ public record class CreateServiceTicketContract
     public string Service_id { get; init; } = null!;
     [JsonPropertyName("details")]
     public string Details { get; init; } = null!;
-    [JsonPropertyName("status")]
-    public string Status { get; init; } = null!;
 }
 
 public record class UpdateServiceTicketContract
@@ -44,5 +42,5 @@ public record class UpdateServiceTicketContract
     [JsonPropertyName("details")]
     public string? Details { get; init; } = null;
     [JsonPropertyName("status")]
-    public string? Status { get; init; } = null;
+    public int? Status { get; init; } = null;
 }
