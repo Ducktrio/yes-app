@@ -60,7 +60,7 @@ builder.Services.AddScoped<IServiceTicketRepository, ServiceTicketRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //AutoMappers
-builder.Services.AddAutoMapper(typeof(RoleMapper), typeof(UserMapper));
+builder.Services.AddAutoMapper(typeof(CustomerMapper), typeof(RoleMapper), typeof(RoomMapper), typeof(RoomTicketMapper), typeof(RoomTypeMapper), typeof(ServiceMapper), typeof(ServiceTicketMapper), typeof(UserMapper));
 
 //Validators
 builder.Services.AddScoped<IValidator<CreateUserContract>, CreateUserValidator>();
