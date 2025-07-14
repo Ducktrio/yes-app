@@ -8,7 +8,7 @@ namespace Yes.Repositories;
 public interface IRoleRepository
 {
     Task<bool> Exists(string id);
-    Task<List<Role>> Get(string? id = null);
+    Task<List<Role>> Get(string? id = null, string? userId = null);
     Task<Role?> Create(Role entity);
     Task<Role?> Update(Role entity);
     Task<Role?> Delete(string id);
@@ -23,10 +23,12 @@ public class RoleRepository(ApplicationDbContext context) : IRoleRepository
         return await _context.Roles.AnyAsync(r => r.Id == id);
     }
 
-    public async Task<List<Role>> Get(string? id = null)
+    public async Task<List<Role>> Get(string? id = null, string? userId = null)
     {
         var query = _context.Roles.AsQueryable();
         if (!string.IsNullOrEmpty(id)) query = query.Where(r => r.Id == id);
+        if (!string.IsNullOrEmpty(userId))
+            query = query.Where(r => r.Users.Any(u => u.Id == userId));
         return await query.ToListAsync();
     }
 
