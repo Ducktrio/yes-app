@@ -50,7 +50,13 @@ builder.Services.AddAuthorizationBuilder()
             context.User.HasClaim(c => c.Type == ClaimTypes.Role && (c.Value == "R_001" || c.Value == "R_002"))));
 
 //Repositories
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IRoomTicketRepository, RoomTicketRepository>();
+builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IServiceTicketRepository, ServiceTicketRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //AutoMappers
