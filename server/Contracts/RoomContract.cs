@@ -20,8 +20,6 @@ public record class CreateRoomContract
     public string RoomType_id { get; init; } = null!;
     [JsonPropertyName("label")]
     public string Label { get; init; } = null!;
-    [JsonPropertyName("Status")]
-    public int Status { get; init; } = 0;
 }
 
 public record class UpdateRoomContract
