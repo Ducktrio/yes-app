@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="Configurations\" />
     <Folder Include="Data\" />
-    <Folder Include="Mappers\" />
     <Folder Include="Migrations\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
