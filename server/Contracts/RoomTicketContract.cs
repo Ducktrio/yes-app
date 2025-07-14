@@ -15,7 +15,7 @@ public record class RoomTicketContract
     [JsonPropertyName("check_out_date")]
     public string CheckOutDate { get; init; } = null!;
     [JsonPropertyName("number_of_occupants")]
-    public string Number_of_occupants { get; init; } = null!;
+    public int Number_of_occupants { get; init; } = 1;
     [JsonPropertyName("status")]
     public int Status { get; init; } = 0;
 }
@@ -26,14 +26,8 @@ public record class CreateRoomTicketContract
     public string Customer_id { get; init; } = null!;
     [JsonPropertyName("room_id")]
     public string Room_id { get; init; } = null!;
-    [JsonPropertyName("check_in_date")]
-    public string CheckInDate { get; init; } = null!;
-    [JsonPropertyName("check_out_date")]
-    public string CheckOutDate { get; init; } = null!;
     [JsonPropertyName("number_of_occupants")]
-    public string Number_of_occupants { get; init; } = null!;
-    [JsonPropertyName("status")]
-    public int Status { get; init; } = 0;
+    public int Number_of_occupants { get; init; } = 1;
 }
 
 public record class UpdateRoomTicketContract
@@ -42,12 +36,6 @@ public record class UpdateRoomTicketContract
     public string? Customer_id { get; init; } = null;
     [JsonPropertyName("room_id")]
     public string? Room_id { get; init; } = null;
-    [JsonPropertyName("check_in_date")]
-    public string? CheckInDate { get; init; } = null;
-    [JsonPropertyName("check_out_date")]
-    public string? CheckOutDate { get; init; } = null;
     [JsonPropertyName("number_of_occupants")]
-    public string? Number_of_occupants { get; init; } = null;
-    [JsonPropertyName("status")]
-    public int? Status { get; init; } = 0;
+    public int? Number_of_occupants { get; init; } = null;
 }
