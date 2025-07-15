@@ -70,11 +70,5 @@ public class UpdateServiceTicketValidator : AbstractValidator<UpdateServiceTicke
                 .NotEmpty().WithMessage("Details are required.")
                 .MaximumLength(500).WithMessage("Details must not exceed 500 characters.");
         });
-        When(x => x.Status.HasValue, () =>
-        {
-            RuleFor(x => x.Status)
-                .NotEmpty().WithMessage("Status is required.")
-                .InclusiveBetween(0, 3).WithMessage("Status must be between 0 and 3.");
-        });
     }
 }
