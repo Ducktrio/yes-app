@@ -41,6 +41,4 @@ public record class UpdateServiceTicketContract
     public string? Service_id { get; init; } = null;
     [JsonPropertyName("details")]
     public string? Details { get; init; } = null;
-    [JsonPropertyName("status")]
-    public int? Status { get; init; } = null;
 }

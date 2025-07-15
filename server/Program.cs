@@ -63,12 +63,30 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddAutoMapper(typeof(CustomerMapper), typeof(RoleMapper), typeof(RoomMapper), typeof(RoomTicketMapper), typeof(RoomTypeMapper), typeof(ServiceMapper), typeof(ServiceTicketMapper), typeof(UserMapper));
 
 //Validators
+builder.Services.AddScoped<IValidator<CreateCustomerContract>, CreateCustomerValidator>();
+builder.Services.AddScoped<IValidator<UpdateCustomerContract>, UpdateCustomerValidator>();
+builder.Services.AddScoped<IValidator<CreateRoomContract>, CreateRoomValidator>();
+builder.Services.AddScoped<IValidator<UpdateRoomContract>, UpdateRoomValidator>();
+builder.Services.AddScoped<IValidator<CreateRoomTicketContract>, CreateRoomTicketValidator>();
+builder.Services.AddScoped<IValidator<UpdateRoomTicketContract>, UpdateRoomTicketValidator>();
+builder.Services.AddScoped<IValidator<CreateRoomTypeContract>, CreateRoomTypeValidator>();
+builder.Services.AddScoped<IValidator<UpdateRoomTypeContract>, UpdateRoomTypeValidator>();
+builder.Services.AddScoped<IValidator<CreateServiceContract>, CreateServiceValidator>();
+builder.Services.AddScoped<IValidator<UpdateServiceContract>, UpdateServiceValidator>();
+builder.Services.AddScoped<IValidator<CreateServiceTicketContract>, CreateServiceTicketValidator>();
+builder.Services.AddScoped<IValidator<UpdateServiceTicketContract>, UpdateServiceTicketValidator>();
 builder.Services.AddScoped<IValidator<CreateUserContract>, CreateUserValidator>();
 builder.Services.AddScoped<IValidator<UpdateUserContract>, UpdateUserValidator>();
 
 //Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IRoomTicketService, RoomTicketService>();
+builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IServiceTicketService, ServiceTicketService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
