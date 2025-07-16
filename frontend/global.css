@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "tailwindcss-react-aria-components";
+@import "tailwindcss-animate";
+
+@import "./theme.css";
