@@ -130,6 +130,15 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod());
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(7231, listenOptions =>
+    {
+        listenOptions.UseHttps("/https/aspnetcore-dev-cert.pfx", "password");
+    });
+    options.ListenAnyIP(5257);
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
