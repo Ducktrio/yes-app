@@ -45,7 +45,7 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Manager", policy => policy.RequireClaim(ClaimTypes.Role, "R_001"))
     .AddPolicy("Receptionist", policy => policy.RequireClaim(ClaimTypes.Role, "R_002"))
     .AddPolicy("Staff", policy => policy.RequireClaim(ClaimTypes.Role, "R_003"))
-    .AddPolicy("ManagerAndReceptionist", policy =>
+    .AddPolicy("ManagerOrReceptionist", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim(c => c.Type == ClaimTypes.Role && (c.Value == "R_001" || c.Value == "R_002"))));
 
