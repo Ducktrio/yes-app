@@ -9,5 +9,6 @@ RUN dotnet build "Yes.csproj" -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
+RUN mkdir -p /app/Data
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "Yes.dll"]
