@@ -42,4 +42,6 @@ jobs:
           file: ./server/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.SERVER_IMAGE_NAME }}:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/${{ secrets.SERVER_IMAGE_NAME }}:latest
+            ${{ secrets.DOCKER_USERNAME }}/${{ secrets.SERVER_IMAGE_NAME }}:${{ github.event.inputs.version }}
