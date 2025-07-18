@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import "tailwindcss-react-aria-components";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source ".flowbite-react/class-list.json";
 @import "tailwindcss-animate";
 
 @import "./theme.css";
