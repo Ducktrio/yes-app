@@ -32,9 +32,9 @@ public class UsersController(
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Get([FromQuery] string? id = null, [FromQuery] string? role_id = null, [FromQuery] string? username = null)
+    public async Task<IActionResult> Get([FromQuery] string? id = null, [FromQuery] string? roleId = null, [FromQuery] string? username = null)
     {
-        var users = await _userService.Get(id, role_id, username);
+        var users = await _userService.Get(id, roleId, username);
         return Ok(users);
     }
 
