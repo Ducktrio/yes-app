@@ -58,6 +58,76 @@ fi
 
 cd "$SERVER_DIR"
 
+# Generate SSL certificates if they don't exist
+echo -e "\n${YELLOW}🔐 Checking SSL certificates...${NC}"
+if [ ! -f "https/aspnetcore-dev-cert.pfx" ]; then
+    echo -e "${YELLOW}📜 Generating SSL certificates...${NC}"
+    
+    # Create https directory if it doesn't exist
+    mkdir -p https
+    
+    # Check if OpenSSL is available
+    if command -v openssl &> /dev/null; then
+        echo -e "${YELLOW}Using OpenSSL to generate certificates...${NC}"
+        
+        # Set OPENSSL_CONF to empty to avoid config file issues
+        export OPENSSL_CONF=""
+        
+        # Try to generate SSL certificate with config workaround
+        if openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout https/aspnetcore-dev-key.pem \
+            -out https/aspnetcore-dev-cert.pem \
+            -subj "/CN=localhost" -config /dev/null 2>/dev/null || \
+           openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout https/aspnetcore-dev-key.pem \
+            -out https/aspnetcore-dev-cert.pem \
+            -subj "/CN=localhost" 2>/dev/null; then
+            
+            # Convert to PKCS12 format for ASP.NET Core
+            if openssl pkcs12 -export \
+                -out https/aspnetcore-dev-cert.pfx \
+                -inkey https/aspnetcore-dev-key.pem \
+                -in https/aspnetcore-dev-cert.pem \
+                -password pass:password 2>/dev/null; then
+                echo -e "${GREEN}✅ SSL certificates generated successfully with OpenSSL!${NC}"
+            else
+                echo -e "${YELLOW}OpenSSL PKCS12 conversion failed, trying dotnet dev-certs...${NC}"
+                # Clean up partial files
+                rm -f https/aspnetcore-dev-key.pem https/aspnetcore-dev-cert.pem https/aspnetcore-dev-cert.pfx
+                # Fall back to dotnet dev-certs
+                if dotnet dev-certs https --export-path https/aspnetcore-dev-cert.pfx --format Pfx --password password --trust; then
+                    echo -e "${GREEN}✅ SSL certificates generated successfully with dotnet dev-certs!${NC}"
+                else
+                    echo -e "${RED}❌ Failed to generate SSL certificate with both OpenSSL and dotnet dev-certs${NC}"
+                    exit 1
+                fi
+            fi
+        else
+            echo -e "${YELLOW}OpenSSL certificate generation failed, trying dotnet dev-certs...${NC}"
+            # Clean up partial files
+            rm -f https/aspnetcore-dev-key.pem https/aspnetcore-dev-cert.pem
+            # Fall back to dotnet dev-certs
+            if dotnet dev-certs https --export-path https/aspnetcore-dev-cert.pfx --format Pfx --password password --trust; then
+                echo -e "${GREEN}✅ SSL certificates generated successfully with dotnet dev-certs!${NC}"
+            else
+                echo -e "${RED}❌ Failed to generate SSL certificate with both OpenSSL and dotnet dev-certs${NC}"
+                exit 1
+            fi
+        fi
+    else
+        echo -e "${YELLOW}OpenSSL not found, using dotnet dev-certs...${NC}"
+        # Use dotnet dev-certs as fallback
+        if dotnet dev-certs https --export-path https/aspnetcore-dev-cert.pfx --format Pfx --password password --trust; then
+            echo -e "${GREEN}✅ SSL certificates generated successfully with dotnet dev-certs!${NC}"
+        else
+            echo -e "${RED}❌ Failed to generate SSL certificate with dotnet dev-certs${NC}"
+            exit 1
+        fi
+    fi
+else
+    echo -e "${GREEN}✅ SSL certificates already exist${NC}"
+fi
+
 # Clean previous builds
 echo -e "\n${YELLOW}🧹 Cleaning previous builds...${NC}"
 dotnet clean
