@@ -51,6 +51,96 @@ if (-not (Test-Path $ServerDir)) {
 
 Set-Location $ServerDir
 
+# Generate SSL certificates if they don't exist
+Write-Host ""
+Write-Host "Checking SSL certificates..." -ForegroundColor $Yellow
+$HttpsDir = Join-Path $ServerDir "https"
+$CertPath = Join-Path $HttpsDir "aspnetcore-dev-cert.pfx"
+
+if (-not (Test-Path $CertPath)) {
+    Write-Host "Generating SSL certificates..." -ForegroundColor $Yellow
+    
+    # Create https directory if it doesn't exist
+    if (-not (Test-Path $HttpsDir)) {
+        New-Item -ItemType Directory -Path $HttpsDir -Force | Out-Null
+    }
+    
+    # Check if OpenSSL is available
+    $opensslCommand = Get-Command openssl -ErrorAction SilentlyContinue
+    if ($opensslCommand) {
+        # Use OpenSSL if available
+        Write-Host "Using OpenSSL to generate certificates..." -ForegroundColor $Cyan
+        
+        # Generate SSL certificate
+        $keyPath = Join-Path $HttpsDir "aspnetcore-dev-key.pem"
+        $certPemPath = Join-Path $HttpsDir "aspnetcore-dev-cert.pem"
+        
+        # Try OpenSSL with config workaround for Windows
+        try {
+            # Set OPENSSL_CONF environment variable to avoid config file issues
+            $env:OPENSSL_CONF = ""
+            
+            $opensslResult1 = & openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $keyPath -out $certPemPath -subj "/CN=localhost" -config NUL 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                # Fallback without -config if that fails
+                $opensslResult1 = & openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $keyPath -out $certPemPath -subj "/CN=localhost" 2>&1
+                if ($LASTEXITCODE -ne 0) {
+                    throw "OpenSSL certificate generation failed"
+                }
+            }
+            
+            # Convert to PKCS12 format for ASP.NET Core
+            $opensslResult2 = & openssl pkcs12 -export -out $CertPath -inkey $keyPath -in $certPemPath -password pass:password 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                throw "OpenSSL PKCS12 conversion failed"
+            }
+            
+            Write-Host "SSL certificates generated successfully with OpenSSL!" -ForegroundColor $Green
+        }
+        catch {
+            Write-Host "OpenSSL failed, falling back to dotnet dev-certs..." -ForegroundColor $Yellow
+            Write-Host "OpenSSL Error: $($opensslResult1)" -ForegroundColor $Red
+            
+            # Clean up any partial files
+            if (Test-Path $keyPath) { Remove-Item $keyPath -Force }
+            if (Test-Path $certPemPath) { Remove-Item $certPemPath -Force }
+            if (Test-Path $CertPath) { Remove-Item $CertPath -Force }
+            
+            # Fall back to dotnet dev-certs
+            Write-Host "Using dotnet dev-certs as fallback..." -ForegroundColor $Cyan
+            
+            # Clean existing dev certificates
+            dotnet dev-certs https --clean | Out-Null
+            
+            # Generate new dev certificate
+            $devCertResult = dotnet dev-certs https --export-path $CertPath --format Pfx --password password --trust
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host "ERROR: Failed to generate SSL certificate with dotnet dev-certs" -ForegroundColor $Red
+                exit 1
+            }
+            
+            Write-Host "SSL certificates generated successfully with dotnet dev-certs!" -ForegroundColor $Green
+        }
+    } else {
+        # Use .NET dev-certs as fallback
+        Write-Host "OpenSSL not found, using dotnet dev-certs..." -ForegroundColor $Cyan
+        
+        # Clean existing dev certificates
+        dotnet dev-certs https --clean | Out-Null
+        
+        # Generate new dev certificate
+        $devCertResult = dotnet dev-certs https --export-path $CertPath --format Pfx --password password --trust
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "ERROR: Failed to generate SSL certificate with dotnet dev-certs" -ForegroundColor $Red
+            exit 1
+        }
+        
+        Write-Host "SSL certificates generated successfully with dotnet dev-certs!" -ForegroundColor $Green
+    }
+} else {
+    Write-Host "SSL certificates already exist" -ForegroundColor $Green
+}
+
 # Clean previous builds
 Write-Host ""
 Write-Host "Cleaning previous builds..." -ForegroundColor $Yellow
