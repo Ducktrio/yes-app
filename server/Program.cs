@@ -134,7 +134,7 @@ builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(7231, listenOptions =>
     {
-        listenOptions.UseHttps("/https/aspnetcore-dev-cert.pfx", "password");
+        listenOptions.UseHttps("https/aspnetcore-dev-cert.pfx", "password");
     });
     options.ListenAnyIP(5257);
 });
