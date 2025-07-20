@@ -9,3 +9,4 @@
 /Data/*.db-wal
 /Data/*.db-shm
 /Data/*.db-journal
+/https

@@ -45,25 +45,49 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Manager", policy => policy.RequireClaim(ClaimTypes.Role, "R_001"))
     .AddPolicy("Receptionist", policy => policy.RequireClaim(ClaimTypes.Role, "R_002"))
     .AddPolicy("Staff", policy => policy.RequireClaim(ClaimTypes.Role, "R_003"))
-    .AddPolicy("ManagerAndReceptionist", policy =>
+    .AddPolicy("ManagerOrReceptionist", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim(c => c.Type == ClaimTypes.Role && (c.Value == "R_001" || c.Value == "R_002"))));
 
 //Repositories
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IRoomTicketRepository, RoomTicketRepository>();
+builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IServiceTicketRepository, ServiceTicketRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //AutoMappers
-builder.Services.AddAutoMapper(typeof(RoleMapper), typeof(UserMapper));
+builder.Services.AddAutoMapper(typeof(CustomerMapper), typeof(RoleMapper), typeof(RoomMapper), typeof(RoomTicketMapper), typeof(RoomTypeMapper), typeof(ServiceMapper), typeof(ServiceTicketMapper), typeof(UserMapper));
 
 //Validators
+builder.Services.AddScoped<IValidator<CreateCustomerContract>, CreateCustomerValidator>();
+builder.Services.AddScoped<IValidator<UpdateCustomerContract>, UpdateCustomerValidator>();
+builder.Services.AddScoped<IValidator<CreateRoomContract>, CreateRoomValidator>();
+builder.Services.AddScoped<IValidator<UpdateRoomContract>, UpdateRoomValidator>();
+builder.Services.AddScoped<IValidator<CreateRoomTicketContract>, CreateRoomTicketValidator>();
+builder.Services.AddScoped<IValidator<UpdateRoomTicketContract>, UpdateRoomTicketValidator>();
+builder.Services.AddScoped<IValidator<CreateRoomTypeContract>, CreateRoomTypeValidator>();
+builder.Services.AddScoped<IValidator<UpdateRoomTypeContract>, UpdateRoomTypeValidator>();
+builder.Services.AddScoped<IValidator<CreateServiceContract>, CreateServiceValidator>();
+builder.Services.AddScoped<IValidator<UpdateServiceContract>, UpdateServiceValidator>();
+builder.Services.AddScoped<IValidator<CreateServiceTicketContract>, CreateServiceTicketValidator>();
+builder.Services.AddScoped<IValidator<UpdateServiceTicketContract>, UpdateServiceTicketValidator>();
 builder.Services.AddScoped<IValidator<CreateUserContract>, CreateUserValidator>();
 builder.Services.AddScoped<IValidator<UpdateUserContract>, UpdateUserValidator>();
 
 //Services
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IRoomTicketService, RoomTicketService>();
+builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IServiceTicketService, ServiceTicketService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 
@@ -104,6 +128,15 @@ builder.Services.AddCors(options =>
         policy => policy.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod());
+});
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(7231, listenOptions =>
+    {
+        listenOptions.UseHttps("https/aspnetcore-dev-cert.pfx", "password");
+    });
+    options.ListenAnyIP(5257);
 });
 
 var app = builder.Build();
