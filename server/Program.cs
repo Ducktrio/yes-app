@@ -132,11 +132,19 @@ builder.Services.AddCors(options =>
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(7231, listenOptions =>
+    var port = Environment.GetEnvironmentVariable("PORT");
+    if (!string.IsNullOrEmpty(port))
     {
-        listenOptions.UseHttps("https/aspnetcore-dev-cert.pfx", "password");
-    });
-    options.ListenAnyIP(5257);
+        options.ListenAnyIP(int.Parse(port));
+    }
+    else
+    {
+        options.ListenAnyIP(7231, listenOptions =>
+        {
+            listenOptions.UseHttps("https/aspnetcore-dev-cert.pfx", "password");
+        });
+        options.ListenAnyIP(5257);
+    }
 });
 
 var app = builder.Build();
@@ -145,6 +153,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 }
 
 using (var scope = app.Services.CreateScope())
@@ -156,7 +165,6 @@ using (var scope = app.Services.CreateScope())
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
