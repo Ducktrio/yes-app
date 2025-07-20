@@ -1,0 +1,27 @@
+name: Promote Server to Production
+
+on:
+    workflow_dispatch:
+        inputs:
+            sha:
+                description: 'Git SHA of the image to promote'
+                required: true
+
+jobs:
+    promote:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Login to ACR
+              uses: docker/login-action@v3
+              with:
+                  registry: ${{ secrets.ACR_LOGIN_SERVER }}
+                  username: ${{ secrets.ACR_USERNAME }}
+                  password: ${{ secrets.ACR_PASSWORD }}
+
+            - name: Promote Docker image to production
+              run: |
+                  TAG=${{ github.event.inputs.sha }}
+                  docker pull ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.SERVER_IMAGE_NAME }}:$TAG
+                  docker tag ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.SERVER_IMAGE_NAME }}:$TAG ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.SERVER_IMAGE_NAME }}:production
+                  docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.SERVER_IMAGE_NAME }}:production
