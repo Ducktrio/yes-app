@@ -24,7 +24,7 @@ public class ServiceTicketService(IServiceTicketRepository serviceTicketReposito
 
     public async Task<List<ServiceTicketContract>> Get(string? id = null, string? customerId = null, string? roomId = null, string? serviceId = null, int? status = null)
     {
-        return _mapper.Map<List<ServiceTicketContract>>(await _serviceTicketRepository.Get(id, customerId));
+        return _mapper.Map<List<ServiceTicketContract>>(await _serviceTicketRepository.Get(id, customerId, roomId, serviceId, status));
     }
 
     public async Task<ServiceTicketContract?> Create(CreateServiceTicketContract createServiceTicket)
