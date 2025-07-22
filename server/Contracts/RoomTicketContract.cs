@@ -18,6 +18,8 @@ public record class RoomTicketContract
     public int Number_of_occupants { get; init; } = 1;
     [JsonPropertyName("status")]
     public int Status { get; init; } = 0;
+    [JsonPropertyName("created_at")]
+    public string Created_at { get; init; } = null!;
 }
 
 public record class CreateRoomTicketContract

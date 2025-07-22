@@ -24,4 +24,6 @@ public class RoomTicket
     public int Number_of_occupants { get; set; } = 1;
     [Required]
     public int Status { get; set; } = 0;
+    [Required]
+    public DateTime Created_at { get; set; } = DateTime.UtcNow;
 }
