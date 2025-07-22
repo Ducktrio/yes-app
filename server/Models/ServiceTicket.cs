@@ -27,4 +27,6 @@ public class ServiceTicket
     public string Details { get; set; } = string.Empty;
     [Required]
     public int Status { get; set; } = 0;
+    [Required]
+    public DateTime Created_at { get; set; } = DateTime.UtcNow;
 }

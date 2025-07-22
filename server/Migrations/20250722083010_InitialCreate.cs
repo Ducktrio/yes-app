@@ -119,7 +119,8 @@ namespace Yes.Migrations
                     CheckInDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CheckOutDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Number_of_occupants = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false)
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,7 +148,8 @@ namespace Yes.Migrations
                     Room_id = table.Column<string>(type: "TEXT", nullable: false),
                     Service_id = table.Column<string>(type: "TEXT", nullable: false),
                     Details = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false)
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,9 +235,9 @@ namespace Yes.Migrations
                 columns: new[] { "Id", "Description", "Password", "Role_id", "Username" },
                 values: new object[,]
                 {
-                    { "U_001", "Hotel Manager", "$2a$11$6dho8iTjY1SkcmtvF4t2YuNZoH.IQt76TBscW0vHCeymE1kfuUAPe", "R_001", "Manager" },
-                    { "U_002", "Front Desk Receptionist", "$2a$11$yr0pP8s/OnDLPDV3Wg/zoOQRlz0cnP710FUmHQHzzvEAAPRtU9C.q", "R_002", "Receptionist" },
-                    { "U_003", "Hotel Staff", "$2a$11$IffRdsyhAwHmTWKtdSXEWOuazjN5njI6Byr.zmsIoQIaVa5c4BS4m", "R_003", "Staff" }
+                    { "U_001", "Hotel Manager", "$2a$11$.2V271Z9m2yiNjX1K/.jhefV3.fthIA1c4bZFZIxW6sVXFQACxhEu", "R_001", "Manager" },
+                    { "U_002", "Front Desk Receptionist", "$2a$11$TNYb8jcMW1w2aBefYxE8Q.3vD0HB/JXJkLtQXftzxxBadYtKfXwHe", "R_002", "Receptionist" },
+                    { "U_003", "Hotel Staff", "$2a$11$aIRdRpgVNW98VT33HB.Ohuc7NuXIUOm8ROr5PSg9hSsdwmPG4gu8y", "R_003", "Staff" }
                 });
 
             migrationBuilder.CreateIndex(
