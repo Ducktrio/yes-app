@@ -16,7 +16,7 @@ export function registerToastHandler(fn: ToastHandler) {
 
 export function toast(level: ToastLevel, message: string) {
   if (notify) {
-    notify({ id: crypto.randomUUID(), level, message });
+    notify({ id: "adkosad", level, message });
   } else {
     console.warn("[toastLog] No toast system registered");
   }

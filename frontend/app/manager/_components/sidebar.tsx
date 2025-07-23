@@ -7,41 +7,31 @@ import {
   SidebarLogo,
 } from "flowbite-react";
 import { usePathname } from "next/navigation";
-import {
-  HiArrowSmRight,
-  HiChartPie,
-  HiCog,
-  HiInbox,
-  HiPlus,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
-} from "react-icons/hi";
+import { HiUser, HiViewBoards } from "react-icons/hi";
+import { BsDoorOpenFill } from "react-icons/bs";
 
-const navLinks = [[
-  { name: 'Dashboard', href: '/manager', icon: HiViewBoards },
-  { name: 'Users', href: '/manager/users', icon: HiUser },
-  { name: 'Register new user', href: '/manager/settings', icon: HiPlus },
-],
-[
-
-]
+const navLinks = [
+  [
+    { name: "Dashboard", href: "/manager", icon: HiViewBoards },
+    { name: "Users", href: "/manager/users", icon: HiUser },
+  ],
+  [{ name: "Rooms", href: "/manager/rooms", icon: BsDoorOpenFill }],
+  [
+    {
+      name: "Tickets",
+      href: "/manager/tickets",
+      icon: HiViewBoards,
+    },
+  ],
 ];
-
 
 export default function ManagerSidebar() {
   const pathname = usePathname();
 
-
   return (
     <Sidebar aria-label="Manager panel sidebar">
-      <SidebarLogo href="#" img="/globe.svg" imgAlt="YES">
-        {process.env.NEXT_PUBLIC_APP_NAME}
-      </SidebarLogo>
+      {process.env.NEXT_PUBLIC_APP_NAME}
       <SidebarItems>
-        
-
         {navLinks.map((group, index) => (
           <SidebarItemGroup key={index}>
             {group.map((link) => (
@@ -56,7 +46,6 @@ export default function ManagerSidebar() {
             ))}
           </SidebarItemGroup>
         ))}
-
       </SidebarItems>
     </Sidebar>
   );

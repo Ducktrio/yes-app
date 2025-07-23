@@ -1,4 +1,6 @@
-import ServiceTicketService, { GetServiceTicketQuery } from "@/api/ServiceTicketService";
+import ServiceTicketService, {
+  GetServiceTicketQuery,
+} from "@/api/ServiceTicketService";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useFetchServiceTickets(query?: GetServiceTicketQuery) {

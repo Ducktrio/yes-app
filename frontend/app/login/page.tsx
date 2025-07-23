@@ -19,14 +19,28 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
+    console.log("Submitting login form", form);
     await auth
       .login(form)
       .then(() => {
         toast("success", "Success logging in");
       })
       .catch((err) => {
+        toast("error", err.message || "Failed to login");
         console.error(err);
+      })
+      .finally(() => {
+        switch (auth.role?.title) {
+          case "Manager":
+            router.push("/manager");
+            break;
+          case "Receptionist":
+            router.push("/receptionist");
+            break;
+          case "Staff":
+            router.push("/staff");
+            break;
+        }
       });
   };
   return (
@@ -39,7 +53,7 @@ export default function LoginPage() {
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="username">Your email</Label>
+                <Label htmlFor="username">Username</Label>
               </div>
               <TextInput
                 id="username"
@@ -52,7 +66,7 @@ export default function LoginPage() {
             </div>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="password">Your password</Label>
+                <Label htmlFor="password">Password</Label>
               </div>
               <TextInput
                 id="password"

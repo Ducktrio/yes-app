@@ -24,7 +24,12 @@ export class ValidationError extends Error {
     Object.setPrototypeOf(this, ValidationError.prototype);
   }
 
+  getErrors(): ValidationErrorResponse[] {
+    return this.errors;
+  }
+
   getMessages(): string[] {
-    return this.errors.map(error => error.errorMessage);
+    return this.errors.map((error) => error.errorMessage);
   }
 }
+

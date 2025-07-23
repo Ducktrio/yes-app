@@ -53,7 +53,7 @@ export default function RootLayout({
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}>
-        <ThemeProvider theme={theme} />
+        <ThemeProvider theme={theme}/>
         <Providers>
           <AuthProvider>
             <ToastProvider>{children}</ToastProvider>

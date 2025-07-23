@@ -21,12 +21,12 @@ export function RoleGuard({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && (!user || !allowed.includes(role?.title!))) {
+    if (!loading && (!user || !allowed.includes(role?.title as string))) {
       router.push("/unauthorized");
     }
   }, [loading, user]);
 
-  if (loading || !user || !allowed.includes(role?.title!)) {
+  if (loading || !user || !allowed.includes(role?.title as string)) {
     return <p>Loading...</p>;
   }
 

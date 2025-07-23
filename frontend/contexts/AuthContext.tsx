@@ -6,6 +6,7 @@ import { AuthResponse, LoginPayload, User } from "@/types/User";
 import { toast } from "@/lib/toast";
 import { Role } from "@/types/Role";
 import useFetchRoles from "@/hooks/useFetchRoles";
+import UserService from "@/api/UserService";
 
 interface AuthContextType {
   user: User | null;
@@ -23,7 +24,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const roles = useFetchRoles(user?.id!);
+  const roles = useFetchRoles({
+    userId: user?.id || "",
+  });
 
   /**
    * check authentication status
@@ -32,25 +35,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const token = localStorage.getItem("authToken");
     if (!token) {
       setUser(null);
+      setRole(null);
       setLoading(false);
       return;
     }
     try {
       const res = await api.get<User>("/Users/me");
       setUser(res.data);
-    } catch (err) {
+      setRole(roles.data?.find((role) => role.id === res.data.role_id) || null);
+    } catch (err: any) {
+      if (err.response && err.response.status === 401) {
+        // Bad Request, or token may expired
+        localStorage.removeItem("authToken");
+        toast("error", "Session expired. Please login again.");
+        router.push("/login");
+        setUser(null);
+        setRole(null);
+
+        return;
+      }
       console.error("Auth check failed", err);
       setUser(null);
+      setRole(null);
     } finally {
       setLoading(false);
     }
   };
 
   const login = async (payload: LoginPayload): Promise<void> => {
-    await api
-      .post<AuthResponse>("Users/login", payload)
+    await UserService.loginUser(payload)
       .then(async (res) => {
-        localStorage.setItem("authToken", res.data.token);
+        localStorage.setItem("authToken", res.token);
         await checkAuth();
         return;
       })
@@ -66,6 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     localStorage.removeItem("authToken");
     setUser(null);
+    setRole(null);
     router.push("/login");
   };
 
@@ -73,10 +89,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkAuth();
   }, []);
 
- 
   useEffect(() => {
     setRole(roles.data?.[0] || null);
-  }, [roles]);
+  }, [roles, user]);
 
   const value: AuthContextType = {
     user,

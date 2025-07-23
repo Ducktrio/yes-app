@@ -1,11 +1,10 @@
 "use client";
 
 import UserService, { GetUserQuery } from "@/api/UserService";
+import { toast } from "@/lib/toast";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useFetchUsers(query?: GetUserQuery) {
-  
-  
   return useQuery({
     queryKey: ["users", query],
     queryFn: () => UserService.getUsers(query),
@@ -13,3 +12,4 @@ export default function useFetchUsers(query?: GetUserQuery) {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
+

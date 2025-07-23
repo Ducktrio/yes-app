@@ -1,10 +1,13 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import * as THREE from "three";
-export default function Anima<T extends HTMLElement>() {
-  const [vantaEffect, setVantaEffect] = useState(null);
-  const setRef = useCallback((el: T | null) => {
-    if (!vantaEffect) {
+export default function Anima<T extends HTMLElement | string>() {
+  const [vantaEffect, setVantaEffect] = useState<any | null>(null);
+  const setRef = useCallback((el: HTMLDivElement | null) => {
+    if (!vantaEffect && el) {
+      /** @ts-expect-error
+       * Vanta don't have types definitions
+       */
       import("vanta/src/vanta.dots").then((VANTA) => {
         const effect = VANTA.default({
           el: el,
@@ -27,6 +30,10 @@ export default function Anima<T extends HTMLElement>() {
     }
 
     return () => {
+      /** @ts-expect-error
+       * Vanta don't have types definitions
+       */
+
       if (vantaEffect) vantaEffect.destroy();
     };
   }, []);

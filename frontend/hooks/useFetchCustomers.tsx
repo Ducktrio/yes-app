@@ -1,4 +1,3 @@
-
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import CustomerService, { GetCustomerQuery } from "@/api/CustomerService";
@@ -11,3 +10,4 @@ export default function useFetchCustomers(query?: GetCustomerQuery) {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
+
