@@ -7,6 +7,7 @@ import { toast } from "@/lib/toast";
 import { Role } from "@/types/Role";
 import useFetchRoles from "@/hooks/useFetchRoles";
 import UserService from "@/api/UserService";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 interface AuthContextType {
   user: User | null;
@@ -26,6 +27,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const roles = useFetchRoles({
     userId: user?.id || "",
+  });
+
+  const loginQuery = useMutation({
+    mutationKey: ["login"],
+    mutationFn: UserService.loginUser,
+    onSettled: async (data) => {
+      localStorage.setItem("authToken", data?.token as string);
+      await checkAuth();
+      switch (role?.title) {
+        case "Manager":
+          router.push("/manager");
+          break;
+        case "Receptionist":
+          router.push("/receptionist");
+          break;
+        case "Staff":
+          router.push("/staff");
+          break;
+      }
+    },
+    onError: (error) => {
+      toast("error", error.message);
+    },
   });
 
   /**
@@ -63,31 +87,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const login = async (payload: LoginPayload): Promise<void> => {
-    await UserService.loginUser(payload)
-      .then(async (res) => {
-        localStorage.setItem("authToken", res.token);
-        await checkAuth();
-        return;
-      })
-      .catch((err) => {
-        if (err.response) {
-          toast("error", err.response.data.title);
-          throw new Error(err.response.data.title);
-        }
-        throw err;
-      });
+    loginQuery.mutate(payload);
   };
 
   const logout = () => {
     localStorage.removeItem("authToken");
     setUser(null);
     setRole(null);
+    toast("success", "Logged out successfully");
     router.push("/login");
   };
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  useEffect(() => {
+    setLoading(loginQuery.isPending);
+  }, [loginQuery.isPending]);
 
   useEffect(() => {
     setRole(roles.data?.[0] || null);

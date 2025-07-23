@@ -1,7 +1,14 @@
 "use client";
 
 import Anima from "../_components/anima";
-import { Card, Label, TextInput, Checkbox, Button } from "flowbite-react";
+import {
+  Card,
+  Label,
+  TextInput,
+  Checkbox,
+  Button,
+  Spinner,
+} from "flowbite-react";
 import { LoginPayload } from "@/types/User";
 import { FormEvent, FormEventHandler, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,19 +36,7 @@ export default function LoginPage() {
         toast("error", err.message || "Failed to login");
         console.error(err);
       })
-      .finally(() => {
-        switch (auth.role?.title) {
-          case "Manager":
-            router.push("/manager");
-            break;
-          case "Receptionist":
-            router.push("/receptionist");
-            break;
-          case "Staff":
-            router.push("/staff");
-            break;
-        }
-      });
+      .finally(() => {});
   };
   return (
     <>
@@ -80,7 +75,10 @@ export default function LoginPage() {
               <Checkbox id="remember" />
               <Label htmlFor="remember">Remember me</Label>
             </div>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={auth.loading}>
+              {auth.loading && <Spinner className="mr-2 w-5 h-5" />}
+              {auth.loading ? "Logging in..." : "Login"}
+            </Button>
           </form>
         </Card>
       </div>
