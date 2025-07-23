@@ -11,7 +11,7 @@ using Yes.Data;
 namespace Yes.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250712234605_InitialCreate")]
+    [Migration("20250722083010_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -199,6 +199,9 @@ namespace Yes.Migrations
                     b.Property<DateTime?>("CheckOutDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Customer_id")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -323,6 +326,9 @@ namespace Yes.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Customer_id")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -389,7 +395,7 @@ namespace Yes.Migrations
                         {
                             Id = "U_001",
                             Description = "Hotel Manager",
-                            Password = "$2a$11$6dho8iTjY1SkcmtvF4t2YuNZoH.IQt76TBscW0vHCeymE1kfuUAPe",
+                            Password = "$2a$11$.2V271Z9m2yiNjX1K/.jhefV3.fthIA1c4bZFZIxW6sVXFQACxhEu",
                             Role_id = "R_001",
                             Username = "Manager"
                         },
@@ -397,7 +403,7 @@ namespace Yes.Migrations
                         {
                             Id = "U_002",
                             Description = "Front Desk Receptionist",
-                            Password = "$2a$11$yr0pP8s/OnDLPDV3Wg/zoOQRlz0cnP710FUmHQHzzvEAAPRtU9C.q",
+                            Password = "$2a$11$TNYb8jcMW1w2aBefYxE8Q.3vD0HB/JXJkLtQXftzxxBadYtKfXwHe",
                             Role_id = "R_002",
                             Username = "Receptionist"
                         },
@@ -405,7 +411,7 @@ namespace Yes.Migrations
                         {
                             Id = "U_003",
                             Description = "Hotel Staff",
-                            Password = "$2a$11$IffRdsyhAwHmTWKtdSXEWOuazjN5njI6Byr.zmsIoQIaVa5c4BS4m",
+                            Password = "$2a$11$aIRdRpgVNW98VT33HB.Ohuc7NuXIUOm8ROr5PSg9hSsdwmPG4gu8y",
                             Role_id = "R_003",
                             Username = "Staff"
                         });

@@ -17,6 +17,8 @@ public record class ServiceTicketContract
     public string Details { get; init; } = null!;
     [JsonPropertyName("status")]
     public int Status { get; init; } = 0;
+    [JsonPropertyName("created_at")]
+    public string Created_at { get; init; } = null!;
 }
 
 public record class CreateServiceTicketContract
