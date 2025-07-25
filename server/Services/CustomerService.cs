@@ -8,7 +8,7 @@ namespace Yes.Services;
 
 public interface ICustomerService
 {
-    Task<List<CustomerContract>> Get(string? id = null, string? roomTicketId = null, string? serviceTicketId = null);
+    Task<List<CustomerContract>> Get(string? id = null, string? full_name = null, string? roomTicketId = null, string? serviceTicketId = null);
     Task<CustomerContract?> Create(CreateCustomerContract createCustomer);
     Task<CustomerContract?> Update(string id, UpdateCustomerContract updateCustomer);
     Task<CustomerContract?> Delete(string id);
@@ -19,9 +19,9 @@ public class CustomerService(ICustomerRepository customerRepository, IMapper map
     private readonly ICustomerRepository _customerRepository = customerRepository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<List<CustomerContract>> Get(string? id = null, string? roomTicketId = null, string? serviceTicketId = null)
+    public async Task<List<CustomerContract>> Get(string? id = null, string? full_name = null, string? roomTicketId = null, string? serviceTicketId = null)
     {
-        return _mapper.Map<List<CustomerContract>>(await _customerRepository.Get(id, roomTicketId, serviceTicketId));
+        return _mapper.Map<List<CustomerContract>>(await _customerRepository.Get(id, full_name, roomTicketId, serviceTicketId));
     }
 
     public async Task<CustomerContract?> Create(CreateCustomerContract createCustomer)
