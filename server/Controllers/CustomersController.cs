@@ -21,9 +21,9 @@ public class CustomersController(
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Get([FromQuery] string? id = null, [FromQuery] string? roomTicketId = null, [FromQuery] string? serviceTicketId = null)
+    public async Task<IActionResult> Get([FromQuery] string? id = null, [FromQuery] string? full_name = null, [FromQuery] string? roomTicketId = null, [FromQuery] string? serviceTicketId = null)
     {
-        var customers = await _customerService.Get(id, roomTicketId, serviceTicketId);
+        var customers = await _customerService.Get(id, full_name, roomTicketId, serviceTicketId);
         return Ok(customers);
     }
 
