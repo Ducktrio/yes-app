@@ -1,5 +1,8 @@
 "use client";
 import {
+  Avatar,
+  Dropdown,
+  DropdownItem,
   Sidebar,
   SidebarItem,
   SidebarItemGroup,
@@ -9,6 +12,7 @@ import {
 import { usePathname } from "next/navigation";
 import { HiUser, HiViewBoards } from "react-icons/hi";
 import { BsDoorOpenFill } from "react-icons/bs";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   [
@@ -27,11 +31,18 @@ const navLinks = [
 
 export default function ManagerSidebar() {
   const pathname = usePathname();
+  const auth = useAuth();
 
   return (
     <Sidebar aria-label="Manager panel sidebar">
-      {process.env.NEXT_PUBLIC_APP_NAME}
       <SidebarItems>
+        <SidebarItemGroup>
+          <div className="mb-8">
+            <b className="text-2xl">{process.env.NEXT_PUBLIC_APP_NAME}</b>
+            <br />
+            <i>Manager</i>
+          </div>
+        </SidebarItemGroup>
         {navLinks.map((group, index) => (
           <SidebarItemGroup key={index}>
             {group.map((link) => (
@@ -46,6 +57,25 @@ export default function ManagerSidebar() {
             ))}
           </SidebarItemGroup>
         ))}
+
+        <SidebarItemGroup>
+          <SidebarItem className="flex items-start justify-start">
+            <Dropdown
+              inline
+              label={
+                <Avatar placeholderInitials={auth.user?.username[0]} rounded>
+                  <div className="space-y-1 font-medium">
+                    <div>{auth.user?.username}</div>
+                  </div>
+                </Avatar>
+              }
+            >
+              <DropdownItem>
+                <span onClick={() => auth.logout()}>Log out</span>
+              </DropdownItem>
+            </Dropdown>
+          </SidebarItem>
+        </SidebarItemGroup>
       </SidebarItems>
     </Sidebar>
   );

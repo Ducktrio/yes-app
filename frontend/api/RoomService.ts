@@ -6,7 +6,7 @@ export interface GetRoomQuery {
   id?: string;
   roomTypeId?: string | null;
   status?: number | null;
-  label?: string;
+  label?: string | null;
   roomTicketId?: string;
   serviceTicketId?: string;
 }
