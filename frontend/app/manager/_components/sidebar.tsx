@@ -71,7 +71,7 @@ export default function ManagerSidebar() {
               }
             >
               <DropdownItem>
-                <a onClick={auth.logout}>Log out</a>
+                <span onClick={() => auth.logout()}>Log out</span>
               </DropdownItem>
             </Dropdown>
           </SidebarItem>

@@ -105,7 +105,7 @@ export default function ManagerTicketsPage() {
 
       <hr className="mt-4 mb-4" />
 
-      <div className="flex flex-wrap space-x-4 mt-4">
+      <div className="flex flex-wrap gap-4 mt-4">
         {tickets.isLoading && (
           <Spinner className="mx-auto" size="xl" aria-label="Loading tickets" />
         )}

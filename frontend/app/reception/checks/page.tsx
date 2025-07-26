@@ -51,7 +51,22 @@ export default function ReceptionChecksPage() {
           }
           icon={BsDoorOpenFill}
         />
-        <TabItem title={<>Checked In</>} icon={BsDoorClosedFill} />
+        <TabItem
+          title={
+            <>
+              Checked In
+              <Badge className="ml-2" color="gray">
+                {
+                  rawChecks.data?.filter(
+                    (raw) =>
+                      raw.check_in_date != null && raw.check_out_date == null,
+                  ).length
+                }
+              </Badge>
+            </>
+          }
+          icon={BsDoorClosedFill}
+        />
       </Tabs>
 
       <TextInput

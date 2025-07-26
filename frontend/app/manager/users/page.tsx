@@ -41,7 +41,7 @@ export default function ManageUserPage() {
         </Button>
       </div>
 
-      <div className="flex flex-wrap space-x-4 space-y-4 mt-4">
+      <div className="flex flex-wrap gap-4 mt-4">
         {users.isLoading && <Spinner className="mx-auto" />}
         {users.isError && (
           <p className="text-red-500">

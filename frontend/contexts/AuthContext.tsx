@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
     setRole(null);
     toast("success", "Logged out successfully");
-    router.push("/login");
+    router.push("/");
   };
 
   useEffect(() => {
