@@ -27,7 +27,7 @@ export default function ReceptionRoomsPage() {
   const rawRooms = useFetchRooms();
   const rooms = useFetchRooms({
     status: filterStatus,
-    label: query ? query : null,
+    label: query,
   });
   const roomTypes = useFetchRoomTypes();
 
@@ -86,6 +86,9 @@ export default function ReceptionRoomsPage() {
           </>
         )}
 
+        {rooms.data?.length === 0 && !rooms.isLoading && (
+          <>No rooms listed in this section</>
+        )}
         {roomTypes.data &&
           rooms.data?.map((room) => (
             <RoomCard
