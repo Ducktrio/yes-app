@@ -9,7 +9,7 @@ namespace Yes.Repositories;
 public interface ICustomerRepository
 {
     Task<bool> Exists(string id);
-    Task<List<Customer>> Get(string? id = null, string? roomTicketId = null, string? serviceTicketId = null);
+    Task<List<Customer>> Get(string? id = null, string? full_name = null, string? roomTicketId = null, string? serviceTicketId = null);
     Task<Customer?> Create(Customer entity);
     Task<Customer?> Update(Customer entity);
     Task<Customer?> Delete(string id);
@@ -24,10 +24,11 @@ public class CustomerRepository(ApplicationDbContext context) : ICustomerReposit
         return await _context.Customers.AnyAsync(c => c.Id == id);
     }
 
-    public async Task<List<Customer>> Get(string? id = null, string? roomTicketId = null, string? serviceTicketId = null)
+    public async Task<List<Customer>> Get(string? id = null, string? full_name = null, string? roomTicketId = null, string? serviceTicketId = null)
     {
         var query = _context.Customers.AsQueryable();
         if (!string.IsNullOrEmpty(id)) query = query.Where(c => c.Id == id);
+        if (!string.IsNullOrEmpty(full_name)) query = query.Where(c => c.Full_name.ToLower().Contains(full_name.ToLower()));
         if (!string.IsNullOrEmpty(roomTicketId)) query = query.Where(c => c.RoomTickets.Any(rt => rt.Id == roomTicketId));
         if (!string.IsNullOrEmpty(serviceTicketId)) query = query.Where(c => c.ServiceTickets.Any(st => st.Id == serviceTicketId));
         return await query.ToListAsync();

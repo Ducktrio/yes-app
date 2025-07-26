@@ -13,6 +13,7 @@ import {
   TimelineItem,
   TimelinePoint,
   TimelineTitle,
+  Textarea,
 } from "flowbite-react";
 import { toast } from "@/lib/toast";
 import { ValidationError, ValidationErrorResponse } from "@/types/Response";
@@ -23,7 +24,6 @@ import { GoGitCompare, GoNote, GoPerson } from "react-icons/go";
 import { GetRoomQuery } from "@/api/RoomService";
 import { GetServiceQuery } from "@/api/ServiceService";
 import { GetCustomerQuery } from "@/api/CustomerService";
-import { TextArea } from "react-aria-components";
 
 interface CreateTicketProps {
   onSuccess?: () => void;
@@ -42,15 +42,14 @@ export default function CreateTicket({ fill, onSuccess }: CreateTicketProps) {
     ValidationErrorResponse[]
   >([]);
 
-  const [roomQuery, setRoomQuery] = useState<GetRoomQuery | null>(null);
-  const [serviceQuery, setServiceQuery] = useState<GetServiceQuery | null>(
-    null,
-  );
-  const [customerQuery, setCustomerQuery] = useState<GetCustomerQuery | null>(
-    null,
-  );
+  const [roomQuery, setRoomQuery] = useState<GetRoomQuery>({
+    label: "",
+  });
+  const [customerQuery, setCustomerQuery] = useState<GetCustomerQuery>({
+    full_name: "",
+  });
 
-  const services = useFetchServices(serviceQuery!);
+  const services = useFetchServices();
   const rooms = useFetchRooms(roomQuery!);
   const customers = useFetchCustomers(customerQuery!);
 
@@ -115,7 +114,7 @@ export default function CreateTicket({ fill, onSuccess }: CreateTicketProps) {
               <TimelineBody className="space-y-4">
                 <TextInput
                   type="search"
-                  value={roomQuery?.label}
+                  value={roomQuery.label}
                   onChange={(e) => setRoomQuery({ label: e.target.value })}
                   placeholder="Search room by label..."
                 />
@@ -179,7 +178,7 @@ export default function CreateTicket({ fill, onSuccess }: CreateTicketProps) {
             <TimelineContent>
               <TimelineTitle>Details</TimelineTitle>
               <TimelineBody className="block">
-                <TextArea
+                <Textarea
                   className="w-full"
                   value={form.details}
                   onChange={(e) =>

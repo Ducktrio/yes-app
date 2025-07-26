@@ -6,8 +6,8 @@ export default function useFetchCustomers(query?: GetCustomerQuery) {
   return useQuery({
     queryKey: ["customers", query],
     queryFn: () => CustomerService.getCustomers(query),
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
-
