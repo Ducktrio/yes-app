@@ -42,15 +42,14 @@ export default function CreateTicket({ fill, onSuccess }: CreateTicketProps) {
     ValidationErrorResponse[]
   >([]);
 
-  const [roomQuery, setRoomQuery] = useState<GetRoomQuery | null>(null);
-  const [serviceQuery, setServiceQuery] = useState<GetServiceQuery | null>(
-    null,
-  );
-  const [customerQuery, setCustomerQuery] = useState<GetCustomerQuery | null>(
-    null,
-  );
+  const [roomQuery, setRoomQuery] = useState<GetRoomQuery>({
+    label: "",
+  });
+  const [customerQuery, setCustomerQuery] = useState<GetCustomerQuery>({
+    full_name: "",
+  });
 
-  const services = useFetchServices(serviceQuery!);
+  const services = useFetchServices();
   const rooms = useFetchRooms(roomQuery!);
   const customers = useFetchCustomers(customerQuery!);
 
@@ -115,7 +114,7 @@ export default function CreateTicket({ fill, onSuccess }: CreateTicketProps) {
               <TimelineBody className="space-y-4">
                 <TextInput
                   type="search"
-                  value={roomQuery?.label}
+                  value={roomQuery.label}
                   onChange={(e) => setRoomQuery({ label: e.target.value })}
                   placeholder="Search room by label..."
                 />
