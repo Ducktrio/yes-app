@@ -1,6 +1,6 @@
-export function timeAgo(date: Date | string): string {
+export function timeAgo(date: number): string {
   const now = new Date();
-  const inputDate = typeof date === "string" ? new Date(date) : date;
+  const inputDate = new Date(date * 1000);
   const diffSeconds = Math.floor((now.getTime() - inputDate.getTime()) / 1000);
 
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });

@@ -10,11 +10,13 @@ import { toast } from "@/lib/toast";
 export default function RoomCard({
   room,
   roomType,
+  onClick,
   onUpdate,
 }: {
   room: Room;
   roomType: RoomType;
   onUpdate?: () => void;
+  onClick?: () => void;
 }) {
   const [showDetail, setShowDetail] = useState(false);
 
@@ -28,7 +30,7 @@ export default function RoomCard({
     <>
       <Card
         className="w-full max-w-sm text-center space-y-4 bg-white shadow-md animate-slide-in duration-300"
-        onClick={() => setShowDetail(true)}
+        onClick={onClick ? onClick : () => setShowDetail(true)}
       >
         <h5 className="text-2xl font-bold tracking-tight text-gray-900">
           {room.label}
