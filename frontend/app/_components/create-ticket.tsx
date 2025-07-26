@@ -13,6 +13,7 @@ import {
   TimelineItem,
   TimelinePoint,
   TimelineTitle,
+  Textarea,
 } from "flowbite-react";
 import { toast } from "@/lib/toast";
 import { ValidationError, ValidationErrorResponse } from "@/types/Response";
@@ -23,7 +24,6 @@ import { GoGitCompare, GoNote, GoPerson } from "react-icons/go";
 import { GetRoomQuery } from "@/api/RoomService";
 import { GetServiceQuery } from "@/api/ServiceService";
 import { GetCustomerQuery } from "@/api/CustomerService";
-import { TextArea } from "react-aria-components";
 
 interface CreateTicketProps {
   onSuccess?: () => void;
@@ -179,7 +179,7 @@ export default function CreateTicket({ fill, onSuccess }: CreateTicketProps) {
             <TimelineContent>
               <TimelineTitle>Details</TimelineTitle>
               <TimelineBody className="block">
-                <TextArea
+                <Textarea
                   className="w-full"
                   value={form.details}
                   onChange={(e) =>
