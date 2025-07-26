@@ -1,5 +1,5 @@
 export function convertUnixToDate(unixTimestampStr: string) {
-  if (!unixTimestampStr || isNaN(unixTimestampStr)) {
+  if (!unixTimestampStr) {
     throw new Error("Invalid UNIX timestamp string");
   }
 
