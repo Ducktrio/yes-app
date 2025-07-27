@@ -55,6 +55,11 @@ public class RoomTicketService(IRoomTicketRepository roomTicketRepository, IServ
         if (roomTicket == null) return null;
         roomTicket.CheckInDate = DateTime.UtcNow;
         var updatedRoomTicket = await _roomTicketRepository.Update(roomTicket);
+
+        var room = (await _roomRepository.Get(roomTicket.Room_id, null, null, null, null, null)).FirstOrDefault();
+        if (room == null) return null;
+        room.Status = 1;
+        await _roomRepository.Update(room);
         return _mapper.Map<RoomTicketContract>(updatedRoomTicket);
     }
 
