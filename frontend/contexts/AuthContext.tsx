@@ -34,9 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       toast("success", "Logged in successfully");
       localStorage.setItem("authToken", data?.token as string);
       setUser(data?.user as User);
-      setRole(
-        roles.data?.find((role) => role.id === data?.user.role_id) || null,
-      );
+      setRole(roles.data?.find((x) => x.id === data?.user.role_id) as Role);
       switch (roles.data?.find((x) => x.id === data?.user.role_id)?.title) {
         case "Manager":
           router.push("/manager");
@@ -93,6 +91,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
+    toast("info", "Initiation log out");
+    console.log("Logging out");
     localStorage.removeItem("authToken");
     setUser(null);
     setRole(null);
