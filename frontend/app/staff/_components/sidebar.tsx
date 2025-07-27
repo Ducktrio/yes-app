@@ -39,7 +39,7 @@ export default function StaffSidebar({
           <div className="mb-8">
             <b className="text-2xl">{process.env.NEXT_PUBLIC_APP_NAME}</b>
             <br />
-            <i>Reception</i>
+            <i>Staff</i>
           </div>
         </SidebarItemGroup>
         <SidebarItemGroup>
