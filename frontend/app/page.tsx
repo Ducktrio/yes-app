@@ -14,8 +14,11 @@ export default function Home() {
         <Card className="max-w-sm text-center">
           <h1 className="text-4xl">{process.env.NEXT_PUBLIC_APP_NAME}</h1>
 
-          <small>Hotel Management System</small>
-          <small>{process.env.NEXT_PUBLIC_APP_COMPANY}</small>
+          <div className="block">
+            <span>Hotel Management System</span>
+            <br />
+            <small>{process.env.NEXT_PUBLIC_APP_COMPANY}</small>
+          </div>
           <Button href="login">Login</Button>
         </Card>
       </div>
