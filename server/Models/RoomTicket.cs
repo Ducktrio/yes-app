@@ -25,5 +25,5 @@ public class RoomTicket
     [Required]
     public int Status { get; set; } = 0;
     [Required]
-    public DateTime Created_at { get; set; } = DateTime.UtcNow;
+    public DateTime Created_at { get; set; } = DateTime.Now;
 }
