@@ -27,16 +27,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log("Submitting login form", form);
-    await auth
-      .login(form)
-      .then(() => {
-        toast("success", "Success logging in");
-      })
-      .catch((err) => {
-        toast("error", err.message || "Failed to login");
-        console.error(err);
-      })
-      .finally(() => {});
+    auth.login(form);
   };
   return (
     <>

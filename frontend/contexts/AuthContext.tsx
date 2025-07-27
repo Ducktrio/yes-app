@@ -13,7 +13,7 @@ interface AuthContextType {
   user: User | null;
   role: Role | null;
   loading: boolean;
-  login: (payload: LoginPayload) => Promise<void>;
+  login: (payload: LoginPayload) => void;
   logout: () => void;
   checkAuth: () => Promise<void>;
 }
@@ -25,17 +25,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const roles = useFetchRoles({
-    userId: user?.id || "",
-  });
+  const roles = useFetchRoles();
 
   const loginQuery = useMutation({
     mutationKey: ["login"],
     mutationFn: UserService.loginUser,
-    onSettled: async (data) => {
+    onSettled: (data) => {
+      toast("success", "Logged in successfully");
       localStorage.setItem("authToken", data?.token as string);
-      await checkAuth();
-      switch (role?.title) {
+      setUser(data?.user as User);
+      setRole(
+        roles.data?.find((role) => role.id === data?.user.role_id) || null,
+      );
+      switch (roles.data?.find((x) => x.id === data?.user.role_id)?.title) {
         case "Manager":
           router.push("/manager");
           break;
@@ -86,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const login = async (payload: LoginPayload): Promise<void> => {
+  const login = (payload: LoginPayload) => {
     loginQuery.mutate(payload);
   };
 
@@ -99,16 +101,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
     setLoading(loginQuery.isPending);
   }, [loginQuery.isPending]);
-
-  useEffect(() => {
-    setRole(roles.data?.[0] || null);
-  }, [roles, user]);
 
   const value: AuthContextType = {
     user,
