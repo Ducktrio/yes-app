@@ -137,4 +137,20 @@ export default class UserService {
         throw err;
       });
   }
+
+  static async me(): Promise<User> {
+    return await api
+      .get<User>("/Users/me")
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        if (err.response) {
+          throw new Error(err.response.data.title);
+        } else if (err.name === "ERR_NETWORK") {
+          throw new Error("Network error. Please check your connection.");
+        }
+        throw err;
+      });
+  }
 }
