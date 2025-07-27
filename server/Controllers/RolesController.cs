@@ -16,10 +16,9 @@ public class RolesController(
     private readonly IRoleService _roleService = roleService;
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> Get([FromQuery] string? id = null, [FromQuery] string? userId = null)
     {
         var roles = await _roleService.Get(id, userId);
         return Ok(roles);
-    }   
+    }
 }
