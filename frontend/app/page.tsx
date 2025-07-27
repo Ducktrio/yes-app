@@ -12,9 +12,10 @@ export default function Home() {
         className="min-h-lvh flex flex-col justify-center items-center"
       >
         <Card className="max-w-sm text-center">
-          <h1 className="text-4xl">YES</h1>
+          <h1 className="text-4xl">{process.env.NEXT_PUBLIC_APP_NAME}</h1>
 
           <small>Hotel Management System</small>
+          <small>{process.env.NEXT_PUBLIC_APP_COMPANY}</small>
           <Button href="login">Login</Button>
         </Card>
       </div>

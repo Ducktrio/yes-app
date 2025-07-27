@@ -6,6 +6,7 @@ export interface ServiceTicket {
   details: string;
   status: number;
   created_at: string;
+  updated_at: string;
 }
 
 export interface CreateServiceTicketPayload {
@@ -21,4 +22,3 @@ export interface UpdateServiceTicketPayload {
   service_id?: string | null;
   details?: string | null;
 }
-

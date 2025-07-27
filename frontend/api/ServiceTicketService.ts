@@ -80,7 +80,7 @@ export default class ServiceTicketService {
 
   static async take(id: string): Promise<ServiceTicket> {
     return await api
-      .post<ServiceTicket>(`ServiceTickets/take/${id}`)
+      .put<ServiceTicket>(`ServiceTickets/take/${id}`)
       .then((res) => {
         return res.data;
       })
@@ -97,7 +97,7 @@ export default class ServiceTicketService {
   }
   static async close(id: string): Promise<ServiceTicket> {
     return await api
-      .post<ServiceTicket>(`ServiceTickets/close/${id}`)
+      .put<ServiceTicket>(`ServiceTickets/close/${id}`)
       .then((res) => {
         return res.data;
       })
