@@ -1,6 +1,7 @@
 import { Room } from "@/types/Room";
 import { Service } from "@/types/Service";
 import { ServiceTicket } from "@/types/ServiceTicket";
+import { timeAgo } from "@/utils/datetime-timeago";
 import { Badge, Card, Textarea } from "flowbite-react";
 import { GoIssueClosed, GoIssueOpened, GoIssueTracks } from "react-icons/go";
 
@@ -26,7 +27,7 @@ export default function TicketCard({
           <h5 className="text-2xl font-bold text-white">{service?.name}</h5>
 
           <Badge
-            className="rounded-full px-4"
+            className={`rounded-full px-4 ${ticket.status == 0 ? "animate-pulse" : ""}`}
             size="lg"
             icon={
               ticket.status === 0
@@ -37,10 +38,10 @@ export default function TicketCard({
             }
             color={
               ticket.status === 0
-                ? "success"
+                ? "warning"
                 : ticket.status === 1
-                  ? "warning"
-                  : "failure"
+                  ? "blue"
+                  : "success"
             }
           >
             {ticket.status === 0
@@ -64,7 +65,7 @@ export default function TicketCard({
 
         {ticket.status === 0 && (
           <span className="flex items-center gap-2 text-gray-400 text-sm">
-            Posted 1 min ago
+            Posted {timeAgo(Number(ticket.created_at))}
           </span>
         )}
       </Card>
